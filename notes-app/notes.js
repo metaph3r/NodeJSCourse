@@ -7,11 +7,11 @@ const getNotes = function () {
 
 const addNote = function (title, body) {
     const notes = loadNotes()
-    const duplicateNotes = notes.filter(function (note) {
+    const filteredNotes = notes.filter(function (note) {
         return note.title === title
     })
 
-    if (duplicateNotes.length === 0) {
+    if (filteredNotes.length === 0) {
         notes.push({
             title: title,
             body: body
@@ -26,12 +26,12 @@ const addNote = function (title, body) {
 const removeNote = function (title) {
     const notes = loadNotes()
     
-    const remainingNotes = notes.filter(function (note) {
+    const filteredNotes = notes.filter(function (note) {
         return note.title != title
     })
     
-    if (remainingNotes.length < notes.length) {
-        saveNotes(remainingNotes)
+    if (filteredNotes.length < notes.length) {
+        saveNotes(filteredNotes)
         console.log('Note with title ' + title + ' removed')
     } else {
         console.log('Note with title ' + title + ' not found')
