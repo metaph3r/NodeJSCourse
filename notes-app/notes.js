@@ -1,4 +1,6 @@
 const fs = require('fs')
+const chalk = require('chalk')
+
 const notesFile = 'notes.json'
 
 const getNotes = function () {
@@ -17,24 +19,24 @@ const addNote = function (title, body) {
             body: body
         })
         saveNotes(notes)
-        console.log('New note added')
+        console.log(chalk.bgGreen('New note added'))
     } else {
-        console.log('Note title already exists')
+        console.log(chalk.bgRed('Note title already exists'))
     }
 }
 
 const removeNote = function (title) {
     const notes = loadNotes()
-    
+
     const filteredNotes = notes.filter(function (note) {
         return note.title != title
     })
-    
+
     if (filteredNotes.length < notes.length) {
         saveNotes(filteredNotes)
-        console.log('Note with title ' + title + ' removed')
+        console.log(chalk.bgGreen('Note with title ' + title + ' removed'))
     } else {
-        console.log('Note with title ' + title + ' not found')
+        console.log(chalk.bgRed('Note with title ' + title + ' not found'))
     }
 }
 
