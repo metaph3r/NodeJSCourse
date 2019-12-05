@@ -26,8 +26,8 @@ request({
 }, (error, response, body) => {
     const feature = body.features[0] // get the feature information for the requested search term
     const feature_name = feature.place_name
-    const lat = feature.center[0]
-    const lon = feature.center[1]
+    const lat = feature.center[1]
+    const lon = feature.center[0]
 
     console.log('Coordinates for ' + feature_name)
     console.log('Latitude: ' + lat + ' Longitude: ' + lon + '\n')
