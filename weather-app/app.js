@@ -12,6 +12,23 @@ request({
         const temperature = body.currently.temperature
         const precipitation = body.currently.precipProbability
 
-        console.log('It is currently ' + temperature + ' degrees out. There is a ' + precipitation + '% probability of rain.')
+        console.log(body.daily.data[0].summary + ' It is currently '
+            + temperature + ' degrees out. There is a '
+            + precipitation + '% chance of rain.\n')
     }
+})
+
+const mapBoxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Dresden.json?access_token=pk.eyJ1IjoibWV0YXBoM3IiLCJhIjoiY2szc2R0ZjZxMDQwYTNkbzEzOTdrc3AyaSJ9.Ty1SQFwFJbcbd8cSTR6ThA&limit=1'
+
+request({
+    url: mapBoxUrl,
+    json: true
+}, (error, response, body) => {
+    const feature = body.features[0] // get the feature information for the requested search term
+    const feature_name = feature.place_name
+    const lat = feature.center[0]
+    const lon = feature.center[1]
+
+    console.log('Coordinates for ' + feature_name)
+    console.log('Latitude: ' + lat + ' Longitude: ' + lon + '\n')
 })
