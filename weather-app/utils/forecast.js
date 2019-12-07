@@ -4,18 +4,18 @@ const forecast = (latitude, longitude, callback) => {
     const url = 'https://api.darksky.net/forecast/03c5aad23649cbc65143c286189eb211/' + latitude + ',' + longitude + '?units=ca'
 
     request({
-        url: url,
+        url,
         json: true
-    }, (error, response) => {
+    }, (error, { body }) => {
         if (error) {
             callback('Unable to connect to weather service!')
-        } else if (response.body.error) {
-            callback(response.body.error)
+        } else if (body.error) {
+            callback(body.error)
         } else {
             callback(undefined, {
-                summary: response.body.daily.data[0].summary,
-                temperature: response.body.currently.temperature,
-                precipitation: response.body.currently.precipProbability
+                summary: body.daily.data[0].summary,
+                temperature: body.currently.temperature,
+                precipitation: body.currently.precipProbability
             })
         }
     })
