@@ -3,14 +3,13 @@ const path = require('path')
 // npm modules
 const express = require('express')
 
-console.log(path.join(__dirname, '../public'))
-
 const app = express()
 
+app.set('view engine', 'hbs')
 app.use(express.static(path.join(__dirname, '../public')))
 
 app.get('/', (req, res) => {
-    res.send('<h1>Weather service</h1>')
+    res.render('index')
 })
 
 app.get('/weather', (req, res) => {
