@@ -1,39 +1,43 @@
-// core modules
 const path = require('path')
-// npm modules
 const express = require('express')
+const hbs = require('hbs')
 
 const app = express()
 
 // define paths for Express configuration
 const publicPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../views')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
 
 // Set up Handlebars and views location
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
 
 // Set up static directory to serve
 app.use(express.static(publicPath))
 
+const name = 'Silvio Glöckner'
+
 app.get('/', (req, res) => {
     res.render('index', {
         title: 'Weather App',
-        name: 'Silvio Glöckner'
+        name: name
     })
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About me',
-        name: 'Silvio Glöckner'
+        name: name
     })
 })
 
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help',
-        message: 'Let me help you'
+        message: 'Let me help you',
+        name: name
     })
 })
 
