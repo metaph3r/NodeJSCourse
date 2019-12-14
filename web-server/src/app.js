@@ -21,7 +21,7 @@ const name = 'Silvio Glöckner'
 
 app.get('/', (req, res) => {
     res.render('index', {
-        title: 'Weather App',
+        title: 'Weather',
         name: name
     })
 })
