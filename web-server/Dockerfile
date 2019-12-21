@@ -1,6 +1,6 @@
 FROM node:12-alpine
 
-WORKDIR /home/node/web-server
+WORKDIR /home/node/weather-app
 
 COPY . ./
 COPY public ./public
