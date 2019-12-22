@@ -1,4 +1,4 @@
-const request = require('request')
+const request = require('request-promise')
 
 const forecast = (latitude, longitude) => {
     return new Promise((resolve, reject) => {
@@ -7,10 +7,8 @@ const forecast = (latitude, longitude) => {
         request({
             url,
             json: true
-        }, (error, { body }) => {
-            if (error) {
-                reject('Unable to connect to weather service!')
-            } else if (body.error) {
+        }).then((body) => {
+            if (body.error) {
                 reject(body.error)
             } else {
                 resolve({
@@ -19,6 +17,8 @@ const forecast = (latitude, longitude) => {
                     precipitation: body.currently.precipProbability
                 })
             }
+        }).catch((error) => {
+            reject(error)
         })
     })
 }
