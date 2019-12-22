@@ -5,16 +5,12 @@ pipeline {
             args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
         }
     }
-    environment {
-        DOCKER_TAG_NAME = 'metaph3r/weather-app:latest'
-    }
-
     stages {
         stage('Build') {
             steps {
                 script {
                     checkout scm
-                    def app = docker.build(${DOCKER_TAG_NAME},'./web-server')
+                    def app = docker.build('metaph3r/weather-app:latest','./web-server')
                 }
             }
         }
