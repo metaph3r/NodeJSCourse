@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    sh 'docker build -t metaph3r/weather-app:${BUILD_ID} ./web-server')
+                    sh 'docker build -t metaph3r/weather-app:${BUILD_ID} ./web-server'
                     sh 'docker tag  metaph3r/weather-app:${BUILD_ID}  metaph3r/weather-app:latest'
                 }
             }
