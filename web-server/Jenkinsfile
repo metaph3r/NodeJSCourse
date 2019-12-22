@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    def app = docker.build('metaph3r/weather-app:latest','./web-server')
+                    def app = docker.build('metaph3r/weather-app:${BUILD_ID}','./web-server')
                 }
             }
         }
