@@ -1,11 +1,19 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkins/jnlp-agent-docker'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
+        }
+    }
     stages {
         stage('Build') {
             steps {
                 script {
                     checkout scm
-                    def app = docker.build('metaph3r/weather-app:${BUILD_ID}','./web-server')
+                    sh 'git rev-parse --short HEAD > .git/commit-id'                        
+                    def COMMIT_ID = readFile('.git/commit-id').trim()
+                    sh 'docker build -t metaph3r/weather-app:${COMMIT_ID} ./web-server'
+                    sh 'docker tag  metaph3r/weather-app:${COMMIT_ID}  metaph3r/weather-app:latest'
                 }
             }
         }
