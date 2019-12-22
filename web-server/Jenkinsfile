@@ -18,7 +18,9 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    sh 'docker stop $(docker ps -a -q --filter ancestor=metaph3r/weather-app:latest --format="{{.ID}}")'
+                    try {
+                        sh 'docker stop $(docker ps -a -q --filter ancestor=metaph3r/weather-app:latest --format="{{.ID}}")'
+                    } catch (all) {}
                     sh 'docker run -d -p 3000:3000 -t metaph3r/weather-app:latest'
                 }
             }
