@@ -10,10 +10,8 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    sh 'git rev-parse --short HEAD > .git/commit-id'                        
-                    def COMMIT_ID = readFile('.git/commit-id').trim()
-                    sh 'docker build -t metaph3r/weather-app:${COMMIT_ID} ./web-server'
-                    sh 'docker tag  metaph3r/weather-app:${COMMIT_ID}  metaph3r/weather-app:latest'
+                    sh 'docker build -t metaph3r/weather-app:${BUILD_ID} ./web-server'
+                    sh 'docker tag  metaph3r/weather-app:${BUILD_ID}  metaph3r/weather-app:latest'
                 }
             }
         }
