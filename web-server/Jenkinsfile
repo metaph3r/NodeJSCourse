@@ -10,8 +10,16 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    def app = docker.build('metaph3r/weather-app:${BUILD_ID}', './web-server')
+                    sh 'docker build -t metaph3r/weather-app:${BUILD_ID} ./web-server')
                     sh 'docker tag  metaph3r/weather-app:${BUILD_ID}  metaph3r/weather-app:latest'
+                }
+            }
+        }
+        stage('Run') {
+            steps {
+                script {
+                    sh 'docker stop $(docker ps -a -q --filter ancestor=metaph3r/weather-app:latest --format="{{.ID}}")'
+                    sh 'docker run -d -p 3000:3000 -t metaph3r/weather-app:latest'
                 }
             }
         }
