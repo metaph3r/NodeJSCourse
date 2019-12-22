@@ -6,9 +6,9 @@ pipeline {
         }
     }
 
-    def COMMIT_ID
-
     stages {
+        def COMMIT_ID
+        
         stage('Build') {
             steps {
                 checkout scm
