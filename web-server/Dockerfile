@@ -2,7 +2,7 @@ FROM node:12-alpine
 
 WORKDIR /home/node/weather-app
 
-COPY . ./
+COPY package*.json ./
 COPY public ./public
 COPY src ./src
 COPY templates ./templates
