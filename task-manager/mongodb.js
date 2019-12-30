@@ -15,5 +15,11 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName)
 
-    
+    const upgradePromise = db.collection('users').updateOne({
+        _id: new ObjectID("")
+    }, {
+        $set: {
+            name: 'Mike'
+        }
+    })
 })
