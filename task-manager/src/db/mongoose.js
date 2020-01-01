@@ -39,37 +39,51 @@ const User = mongoose.model('User', {
                 throw new Error('Email is invalid')
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 7,
+        validate(value) {
+            if(value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"')
+            }
+        }
     }
 })
 
 // model for tasks
 const Task = mongoose.model('Task', {
     description: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     completed: {
-        type: Boolean
+        type: Boolean,
+        default: false
     }
 })
 
-// const task = new Task({
-//     description: "Learn NodeJS",
-//     completed: false
-// })
-
-// task.save().then(() => {
-//     console.log(task)
-// }).catch((error) => {
-//     console.error(error)
-// })
-
-const me = new User({
-    name: '   Silvio  ',
-    email: '   silvio@silvio-gloeckner.de   '
+const task = new Task({
+    description: '            Do something!     '
 })
 
-me.save().then(() => {
-    console.log(me)
+task.save().then(() => {
+    console.log(task)
 }).catch((error) => {
     console.error(error)
 })
+
+// const me = new User({
+//     name: '   Silvio  ',
+//     email: '   silvio@silvio-gloeckner.de   ',
+//     password: 'Password'
+// })
+
+// me.save().then(() => {
+//     console.log(me)
+// }).catch((error) => {
+//     console.error(error)
+// })
