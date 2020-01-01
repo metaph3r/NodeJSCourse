@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 var mongoose = require('mongoose')
+var validator = require('validator')
 
 const MONGODB_USERNAME = encodeURIComponent(process.env.MONGODB_USERNAME)
 const MONGODB_PASSWORD = encodeURIComponent(process.env.MONGODB_PASSWORD)
@@ -12,15 +13,36 @@ mongoose.connect(connectionURL, {
     useCreateIndex: true
 })
 
+// model for users
 const User = mongoose.model('User', {
     name: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     age: {
-        type: Number
+        type: Number,
+        default: 0,
+        validate(value) {
+            if(value < 0) {
+                throw new Error('Age must be a positive number')
+            }
+        }
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if(!validator.isEmail(value)) {
+                throw new Error('Email is invalid')
+            }
+        }
     }
 })
 
+// model for tasks
 const Task = mongoose.model('Task', {
     description: {
         type: String
@@ -30,24 +52,24 @@ const Task = mongoose.model('Task', {
     }
 })
 
-const task = new Task({
-    description: "Learn NodeJS",
-    completed: false
-})
-
-task.save().then(() => {
-    console.log(task)
-}).catch((error) => {
-    console.error(error)
-})
-
-// const me = new User({
-//     name: 'Silvio Glöckner',
-//     age: 40
+// const task = new Task({
+//     description: "Learn NodeJS",
+//     completed: false
 // })
 
-// me.save().then(() => {
-//     console.log(me)
+// task.save().then(() => {
+//     console.log(task)
 // }).catch((error) => {
 //     console.error(error)
 // })
+
+const me = new User({
+    name: '   Silvio  ',
+    email: '   silvio@silvio-gloeckner.de   '
+})
+
+me.save().then(() => {
+    console.log(me)
+}).catch((error) => {
+    console.error(error)
+})
