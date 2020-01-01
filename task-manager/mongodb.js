@@ -7,7 +7,7 @@ const { MongoClient, ObjectID } = require('mongodb')
 
 const connectionURL = 'mongodb://'
     + MONGODB_USERNAME + ':' + MONGODB_PASSWORD
-    + '@127.0.0.1:27017'
+    + '@85.214.129.146:27017'
 const databaseName = 'task-manager'
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
