@@ -1,12 +1,16 @@
-const doWorkPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        // resolve('Everything went well!')
-        reject('This is my error!')
-    }, 2000)
-})
+const add = (a, b) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(a + b)
+        }, 2000)
+    })
+}
 
-doWorkPromise.then((resolve) => {
-    console.log(resolve)
-}).catch((reject) => {
-    console.log(reject)
+add(1,2).then((sum) => {
+    console.log(sum)
+    return add(sum, 4)
+}).then((sum) => {
+    console.log(sum)
+}).catch((e) => {
+    console.log(e)
 })
