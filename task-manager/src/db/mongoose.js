@@ -12,4 +12,7 @@ mongoose.connect(connectionURL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false
+}, (error) => {
+    if(error) console.error(error.message)
+    else console.log('Login to MongoDB successful')
 })
