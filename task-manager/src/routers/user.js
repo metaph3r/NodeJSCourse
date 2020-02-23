@@ -18,7 +18,7 @@ router.post('/users/login', async (req, res) => {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         res.send(user)
     } catch (error) {
-        res.status(400).send({ error })
+        res.status(400).send(error)
     }
 })
 
@@ -39,7 +39,7 @@ router.get('/users/:id', async (req, res) => {
         }
         res.status(200).send(user)
     } catch (error) {
-        res.status(500).send(e)
+        res.status(500).send(error)
     }
 })
 
