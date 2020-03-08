@@ -75,6 +75,8 @@ router.get('/users/me', auth, async (req, res) => {
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
     res.send()
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
 })
 
 router.patch('/users/me', auth, async (req, res) => {
