@@ -48,6 +48,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 })
 
 userSchema.virtual('tasks', {
@@ -56,7 +58,7 @@ userSchema.virtual('tasks', {
     foreignField: 'author'
 })
 
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
 
@@ -100,7 +102,7 @@ userSchema.pre('save', async function (next) {
 })
 
 // Delte user tasks when user is removed
-userSchema.pre('remove', async function(next) {
+userSchema.pre('remove', async function (next) {
     const user = this
     await Task.deleteMany({ author: user._id })
     next()
