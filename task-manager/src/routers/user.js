@@ -3,7 +3,17 @@ const User = require('../models/user')
 const router = new express.Router()
 const multer = require('multer')
 const upload = multer({
-    dest: 'avatar'
+    dest: 'avatar',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.doc[x]*$/)) {
+            return cb(new Error('Please upload a Word document'))
+        } else {
+            cb(undefined, true)
+        }
+    }
 })
 
 const auth = require('../middleware/auth')
