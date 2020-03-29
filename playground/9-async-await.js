@@ -19,3 +19,7 @@ doWork().then((result) => {
 }).catch((e) => {
     console.error(e)
 })
+
+module.exports = {
+    add
+}
