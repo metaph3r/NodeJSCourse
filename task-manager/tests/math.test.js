@@ -1,5 +1,13 @@
 const { calculateTip, fahrenheitToCelsius, celsiusToFahrenheit } = require('../src/math')
-const { add } = require('../../playground/9-async-await')
+
+const add = (a, b) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if(a < 0 || b < 0) return reject('You can only add positive numbers')
+            resolve(a + b)
+        }, 2000)
+    })
+}
 
 test('Should calculate total with tip', () => {
     const total = calculateTip(10, 0.3)
