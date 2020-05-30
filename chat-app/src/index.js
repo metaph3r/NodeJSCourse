@@ -1,12 +1,17 @@
+const fs = require('fs')
 const path = require('path')
-const http = require('http')
+const https = require('https')
 const express = require('express')
 const socketio = require('socket.io')
 const Filter = require('bad-words')
 
+const privateKey = fs.readFileSync('ssl/key.pem', 'utf8')
+const certificate = fs.readFileSync('ssl/cert.pem', 'utf8')
+const credentials = { key: privateKey, cert: certificate }
+
 const app = express()
-const server = http.createServer(app)
-const io = socketio(server)
+const httpsServer = https.createServer(credentials, app)
+const io = socketio(httpsServer)
 
 const port = process.env.PORT || 3000
 const publicPath = path.join(__dirname, '../public')
@@ -41,6 +46,6 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(port, () => {
+httpsServer.listen(port, () => {
     console.log('Server is up on port ' + port)
 })
