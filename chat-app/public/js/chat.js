@@ -4,9 +4,16 @@ const socket = io()
 const $messageSendButton = document.querySelector('#send')
 const $messageInputField = document.querySelector('#message')
 const $sendLocationButton = document.querySelector('#location')
+const $messages = document.querySelector('#messages')
+
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
 
 socket.on('message', (message) => {
-    console.log(message)
+    const html = Mustache.render(messageTemplate, {
+        message
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
 })
 
 $messageSendButton.addEventListener('click', () => {
