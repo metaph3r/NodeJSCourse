@@ -13,7 +13,8 @@ const locationMessageTemplate = document.querySelector('#location-message-templa
 // Chat message event
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
-        message
+        message: message.message,
+        timestamp: moment(message.timestamp).format('HH:mm:ss')
     })
     $messages.insertAdjacentHTML('beforeend', html)
 })
