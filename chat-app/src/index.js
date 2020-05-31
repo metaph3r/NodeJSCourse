@@ -16,7 +16,7 @@ const io = socketio(httpsServer)
 const port = process.env.PORT || 3000
 const publicPath = path.join(__dirname, '../public')
 
-const { generateMessage } = require('./utils/messages')
+const { generateMessage, generateLocationMessage } = require('./utils/messages')
 
 app.use(express.static(publicPath))
 
@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendLocation', (location, callback) => {
-        io.emit('locationMessage', `https://google.de/maps?q=${location.latitude},${location.longitude}`)
+        io.emit('locationMessage', generateLocationMessage(location))
         callback()
     })
 

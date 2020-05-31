@@ -10,18 +10,23 @@ const $messages = document.querySelector('#messages')
 const messageTemplate = document.querySelector('#message-template').innerHTML
 const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML
 
+const dataFormat = 'HH:mm:ss'
+
 // Chat message event
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
         message: message.message,
-        timestamp: moment(message.timestamp).format('HH:mm:ss')
+        timestamp: moment(message.timestamp).format(dataFormat)
     })
     $messages.insertAdjacentHTML('beforeend', html)
 })
 
 // Location message event
 socket.on('locationMessage', (url) => {
-    const html = Mustache.render(locationMessageTemplate, { url })
+    const html = Mustache.render(locationMessageTemplate, {
+        url: url.url,
+        timestamp: moment(url.timestamp).format(dataFormat)
+    })
     $messages.insertAdjacentHTML('beforeend', html)
 })
 
