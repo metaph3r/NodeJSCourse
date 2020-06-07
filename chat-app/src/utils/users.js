@@ -39,3 +39,33 @@ const removeUser = (id) => {
     if (index != -1)
         return users.splice(index, 1)[0]
 }
+
+/**
+ * Get user with ID from users
+ * 
+ * @param {Number} id ID of the user
+ *
+ * @returns User object or undefined
+ */
+const getUser = (id) => {
+    return users.find(user => user.id == id)
+}
+
+/**
+ * Get all users in a specific room
+ * 
+ * @param {String} room Name of the room
+ * 
+ * @returns Array of user object in the room
+ */
+const getUsersInRoom = (room) => {
+    room = room.trim().toLowerCase()
+    return users.filter(user => user.room == room)
+}
+
+module.exports = {
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom
+}
