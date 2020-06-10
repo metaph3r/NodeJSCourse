@@ -18,6 +18,7 @@ const dataFormat = 'HH:mm:ss'
 // Chat message event
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
+        username: message.username,
         message: message.message,
         timestamp: moment(message.timestamp).format(dataFormat)
     })
@@ -25,10 +26,11 @@ socket.on('message', (message) => {
 })
 
 // Location message event
-socket.on('locationMessage', (url) => {
+socket.on('locationMessage', (message) => {
     const html = Mustache.render(locationMessageTemplate, {
-        url: url.url,
-        timestamp: moment(url.timestamp).format(dataFormat)
+        username: message.username,
+        url: message.url,
+        timestamp: moment(message.timestamp).format(dataFormat)
     })
     $messages.insertAdjacentHTML('beforeend', html)
 })
