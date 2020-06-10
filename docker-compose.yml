@@ -1,5 +1,13 @@
-version: "3.1"
+version: "3"
 services:
+  chat-app:
+    build: "chat-app"
+    ports:
+      - "3000:3000"
+  web-server:
+    build: "web-server"
+    ports:
+      - "3001:3000"
   mongo:
     image: mongo
     restart: always
@@ -20,5 +28,9 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
       ME_CONFIG_BASICAUTH_USERNAME: ${MONGODB_USERNAME}
       ME_CONFIG_BASICAUTH_PASSWORD: ${MONGODB_PASSWORD}
+  task-manager:
+    build: 'task-manager'
+    ports:
+      - '3002:3000'
 volumes:
   mongodb:
