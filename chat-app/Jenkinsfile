@@ -4,13 +4,15 @@ pipeline {
     }
     stages {
         stage('Build Container') {
-            node {
-                checkout scm
-                
-                docker.withRegistry('https://hub.docker.com/', '4a3578db-27d2-4f61-baea-724244ec78e6') {
-                    def chatAppImage = docker.build("chat-app:${env.BUILD_ID}")
-                    chatAppImage.push()
-                    chatAppImage.push('latest')
+            steps {
+                node {
+                    checkout scm
+                    
+                    docker.withRegistry('https://hub.docker.com/', '4a3578db-27d2-4f61-baea-724244ec78e6') {
+                        def chatAppImage = docker.build("chat-app:${env.BUILD_ID}")
+                        chatAppImage.push()
+                        chatAppImage.push('latest')
+                    }
                 }
             }
         }
