@@ -9,7 +9,7 @@ pipeline {
                     
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/', '6774f548-c251-4f49-bb19-860481b71238') {
-                        def chatAppImage = docker.build("chat-app:${env.BUILD_ID}", './chat-app/Dockerfile')
+                        def chatAppImage = docker.build("chat-app:${env.BUILD_ID}", './chat-app')
                         chatAppImage.push()
                         chatAppImage.push('latest')
                     }
