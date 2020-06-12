@@ -8,7 +8,7 @@ pipeline {
                 checkout scm
                     
                 script {
-                    docker.withRegistry('https://hub.docker.com/', '6774f548-c251-4f49-bb19-860481b71238') {
+                    docker.withRegistry('https://registry.hub.docker.com/', '6774f548-c251-4f49-bb19-860481b71238') {
                         def chatAppImage = docker.build("chat-app:${env.BUILD_ID}")
                         chatAppImage.push()
                         chatAppImage.push('latest')
