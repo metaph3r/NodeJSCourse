@@ -1,12 +1,10 @@
-FROM node:12-alpine
+FROM node:16.13.0-alpine3.14
 
 COPY ./package*.json ./
-
 RUN npm install --only=prod
 
-COPY ./src ./src
 COPY ./public ./public
-COPY ./ssl ./ssl
+COPY ./src ./src
 
 EXPOSE 3000/tcp
 
