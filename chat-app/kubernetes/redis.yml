@@ -8,8 +8,8 @@ spec:
     app: redis
   externalName: redis
   ports:
-  - port: 6379
-    targetPort: 6379
+    - port: 6379
+      targetPort: 6379
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -28,8 +28,11 @@ spec:
         app: redis
     spec:
       containers:
-      - name: redis
-        image: redis:6.2.6-alpine3.14
-        ports:
-        - containerPort: 6379
-          name: http
+        - name: redis
+          image: redis:6.2.6-alpine3.14
+          livenessProbe:
+            failureThreshold: 3
+            tcpSocket:
+              port: 6379
+          ports:
+            - containerPort: 6379
