@@ -7,28 +7,36 @@ const REDIS_PORT = process.env.REDIS_PORT || 6379
 const socketio = require('socket.io')
 const { createAdapter } = require('@socket.io/redis-adapter')
 const { createClient } = require('redis')
-
 const path = require('path')
 const http = require('http')
 const express = require('express')
 const Filter = require('bad-words')
-
-const app = express()
-const httpServer = http.createServer(app)
-const publicPath = path.join(__dirname, '../public')
-
-const io = socketio(httpServer)
-const pubClient = createClient({host: REDIS_HOST, port: REDIS_PORT})
-const subClient = pubClient.duplicate()
-io.adapter(createAdapter(pubClient, subClient))
-
+const logger = require('./logger')
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
 
+const publicPath = path.join(__dirname, '../public')
+const app = express()
 app.use(express.static(publicPath))
+const httpServer = http.createServer(app)
+const io = socketio(httpServer)
+
+const pubClient = createClient({ host: REDIS_HOST, port: REDIS_PORT })
+pubClient.on('ready', () => {
+    logger.info('Redis is connected')
+})
+pubClient.on('error', (error) => {
+    logger.error(error)
+})
+const subClient = pubClient.duplicate()
+io.adapter(createAdapter(pubClient, subClient))
+
+io.on('error', (error) => {
+    logger.error(error)
+})
 
 io.on('connection', (socket) => {
-    console.log('New WebSocket connection')
+    logger.info(`New WebSocket connection from ${socket.handshake.address}`)
 
     socket.on('join', ({ username, room }, callback) => {
         const { error, user } = addUser({ id: socket.id, username, room })
@@ -80,8 +88,12 @@ io.on('connection', (socket) => {
             })
         }
     })
+
+    socket.on('error', (error) => {
+        logger.error(error)
+    })
 })
 
 httpServer.listen(PORT, () => {
-    console.log('Server is up on port ' + PORT)
+    logger.info('Server is up on port ' + PORT)
 })
