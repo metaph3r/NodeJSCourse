@@ -1,20 +1,26 @@
-const fs = require('fs')
-const path = require('path')
-const https = require('https')
-const express = require('express')
+require('dotenv').config()
+
+const PORT = process.env.PORT || 3000
+const REDIS_HOST = process.env.REDIS_HOST || 'redis'
+const REDIS_PORT = process.env.REDIS_PORT || 6379
+
 const socketio = require('socket.io')
+const { createAdapter } = require('@socket.io/redis-adapter')
+const { createClient } = require('redis')
+
+const path = require('path')
+const http = require('http')
+const express = require('express')
 const Filter = require('bad-words')
 
-const privateKey = fs.readFileSync('ssl/key.pem', 'utf8')
-const certificate = fs.readFileSync('ssl/cert.pem', 'utf8')
-const credentials = { key: privateKey, cert: certificate }
-
 const app = express()
-const httpsServer = https.createServer(credentials, app)
-const io = socketio(httpsServer)
-
-const port = process.env.PORT || 3000
+const httpServer = http.createServer(app)
 const publicPath = path.join(__dirname, '../public')
+
+const io = socketio(httpServer)
+const pubClient = createClient({host: REDIS_HOST, port: REDIS_PORT})
+const subClient = pubClient.duplicate()
+io.adapter(createAdapter(pubClient, subClient))
 
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
@@ -76,6 +82,6 @@ io.on('connection', (socket) => {
     })
 })
 
-httpsServer.listen(port, () => {
-    console.log('Server is up on port ' + port)
+httpServer.listen(PORT, () => {
+    console.log('Server is up on port ' + PORT)
 })

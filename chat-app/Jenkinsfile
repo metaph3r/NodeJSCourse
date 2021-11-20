@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build Container') {
+            steps {
+                checkout scm
+                    
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com/', '6774f548-c251-4f49-bb19-860481b71238') {
+                        def chatAppImage = docker.build("metaph3r/chat-app:${env.BUILD_ID}", './chat-app')
+                        chatAppImage.push()
+                        chatAppImage.push('latest')
+                    }
+                }
+            }
+        }
+    }
+}
