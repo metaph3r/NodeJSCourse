@@ -8,14 +8,18 @@ metadata:
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/affinity-mode: balanced
 spec:
+  tls:
+    - hosts:
+        - chatapp.f8e79c5a2c0d44f18aff.germanywestcentral.aksapp.io
+      secretName: chat-app-tls
   rules:
-  - host: chatapp.f8e79c5a2c0d44f18aff.germanywestcentral.aksapp.io
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service: 
-            name: chat-app
-            port: 
-              number: 8080
+    - host: chatapp.f8e79c5a2c0d44f18aff.germanywestcentral.aksapp.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-app
+                port:
+                  number: 8080
