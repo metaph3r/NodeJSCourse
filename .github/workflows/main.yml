@@ -1,4 +1,4 @@
-name: Docker build and publish
+name: Deploy chat-app to Kubernetes
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  docker-build-push:
+    name: Build Docker image and push to Docker Hub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -33,6 +33,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }},metaph3r/chat-app:latest
           labels: ${{ steps.meta.outputs.labels }}
 
+  deploy-kubernetes:
+    name: Deploy chat-app to Kubernetes
+    runs-on: ubuntu-latest
+    needs: docker-build-push
+    steps:
       - name: Set Kubernetes context
         id: context
         uses: azure/k8s-set-context@v1
@@ -45,7 +50,7 @@ jobs:
         uses: Azure/k8s-deploy@v1.4
         with:
           manifests: chat-app/kubernetes/namespace.yml
-          kubectl-version: latest
+          kubectl-version: 1.20
 
       - name: Set up cert-manager
         uses: Azure/k8s-deploy@v1.4
@@ -53,7 +58,7 @@ jobs:
           manifests: |
             chat-app/kubernetes/cert-manager.yml
             chat-app/kubernetes/cluster-issuer.yml
-          kubectl-version: latest
+          kubectl-version: 1.20
 
       - name: Deploy chat-app application
         uses: Azure/k8s-deploy@v1.4
@@ -62,4 +67,4 @@ jobs:
             chat-app/kubernetes/redis.yml
             chat-app/kubernetes/chat-app.yml
             chat-app/kubernetes/ingress.yml
-          kubectl-version: latest
+          kubectl-version: 1.20
