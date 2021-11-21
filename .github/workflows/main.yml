@@ -57,7 +57,7 @@ jobs:
         with:
           manifests: |
             namespace.yml
-          kubectl-version: 1.20
+          kubectl-version: latest
 
       - name: Set up cert-manager
         uses: Azure/k8s-deploy@v1.4
@@ -65,7 +65,7 @@ jobs:
           manifests: |
             cert-manager.yml
             cluster-issuer.yml
-          kubectl-version: 1.20
+          kubectl-version: latest
 
       - name: Deploy chat-app application
         uses: Azure/k8s-deploy@v1.4
@@ -74,4 +74,4 @@ jobs:
             redis.yml
             chat-app.yml
             ingress.yml
-          kubectl-version: 1.20
+          kubectl-version: latest
