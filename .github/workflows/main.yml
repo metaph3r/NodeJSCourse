@@ -49,16 +49,10 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
           context: kubernetes-1
 
-      - name: Set up chat-app namespace
-        uses: Azure/k8s-deploy@v1.4
-        with:
-          manifests: |
-            ./chat-app/kubernetes/namespace.yml
-          kubectl-version: latest
-
       - name: Set up cert-manager
         uses: Azure/k8s-deploy@v1.4
         with:
+          namespace: cert-manager
           manifests: |
             ./chat-app/kubernetes/cert-manager.yml
             ./chat-app/kubernetes/cluster-issuer.yml
@@ -67,6 +61,7 @@ jobs:
       - name: Deploy chat-app application
         uses: Azure/k8s-deploy@v1.4
         with:
+          namespace: chat-app
           manifests: |
             ./chat-app/kubernetes/redis.yml
             ./chat-app/kubernetes/chat-app.yml
