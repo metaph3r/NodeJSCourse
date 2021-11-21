@@ -53,8 +53,22 @@ jobs:
         uses: Azure/k8s-deploy@v1.4
         with:
           namespace: cert-manager
+          manifests: ./chat-app/kubernetes/cert-manager.yml
+          kubectl-version: latest
+
+      - name: Set up cert-manager-authorization
+        uses: Azure/k8s-deploy@v1.4
+        with:
+          namespace: kube-system
+          manifests: ./chat-app/kubernetes/cert-manager-authorization.yml
+          kubectl-version: latest
+
+      - name: Set up cert-manager-deployments
+        uses: Azure/k8s-deploy@v1.4
+        with:
+          namespace: cert-manager
           manifests: |
-            ./chat-app/kubernetes/cert-manager.yml
+            ./chat-app/kubernetes/cert-manager-authorization.yml
             ./chat-app/kubernetes/cluster-issuer.yml
           kubectl-version: latest
 
