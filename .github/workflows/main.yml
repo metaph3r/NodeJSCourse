@@ -36,9 +36,6 @@ jobs:
   deploy-kubernetes:
     name: Deploy chat-app to Kubernetes
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: chat-app/kubernetes
     needs: docker-build-push
     steps:
       - name: Check out the repo
@@ -56,22 +53,22 @@ jobs:
         uses: Azure/k8s-deploy@v1.4
         with:
           manifests: |
-            ./namespace.yml
+            ./chat-app/kubernetes/namespace.yml
           kubectl-version: latest
 
       - name: Set up cert-manager
         uses: Azure/k8s-deploy@v1.4
         with:
           manifests: |
-            cert-manager.yml
-            cluster-issuer.yml
+            ./chat-app/kubernetes/cert-manager.yml
+            ./chat-app/kubernetes/cluster-issuer.yml
           kubectl-version: latest
 
       - name: Deploy chat-app application
         uses: Azure/k8s-deploy@v1.4
         with:
           manifests: |
-            redis.yml
-            chat-app.yml
-            ingress.yml
+            ./chat-app/kubernetes/redis.yml
+            ./chat-app/kubernetes/chat-app.yml
+            ./chat-app/kubernetes/ingress.yml
           kubectl-version: latest
