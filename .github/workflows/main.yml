@@ -54,6 +54,7 @@ jobs:
         with:
           namespace: chat-app
           manifests: |
+            ./chat-app/kubernetes/chat-app-namespace.yml
             ./chat-app/kubernetes/redis.yml
             ./chat-app/kubernetes/chat-app.yml
             ./chat-app/kubernetes/ingress.yml
