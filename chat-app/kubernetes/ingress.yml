@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - chatapp.f8e79c5a2c0d44f18aff.germanywestcentral.aksapp.io
+        - chatapp.b2d6a535b94d41c485fa.germanywestcentral.aksapp.io
       secretName: chat-app-tls
   rules:
-    - host: chatapp.f8e79c5a2c0d44f18aff.germanywestcentral.aksapp.io
+    - host: chatapp.b2d6a535b94d41c485fa.germanywestcentral.aksapp.io
       http:
         paths:
           - path: /
